@@ -29,13 +29,18 @@ USB protocol** (`docs/FIRMWARE.md`).
 sudo cp udev/50-keydous.rules /etc/udev/rules.d/
 sudo udevadm control --reload && sudo udevadm trigger
 
-# 2) launch the web GUI
-./keydous-driver gui            # open http://127.0.0.1:8765
+# 2) install as a desktop app (menu entry + icon + launcher)
+./install.sh
 ```
 
+Then launch **Keydous NJ81 Driver** from your app menu, or run
+`~/.local/bin/keydous-nj81`. It opens a native GTK/WebKit window (no browser
+tab). Without the wrapper, `./keydous-driver gui` serves the same UI at
+`http://127.0.0.1:8765`.
+
 No pip installs for the USB path — everything uses the standard library
-(ctypes + raw `usbfs` ioctls). BLE support is optional (`dbus-next` or
-`bleak`).
+(ctypes + raw `usbfs` ioctls). The native window needs `python3-gi` and
+`gir1.2-webkit2-4.1`. BLE support is optional (`dbus-next` or `bleak`).
 
 ## Web GUI (http://127.0.0.1:8765)
 

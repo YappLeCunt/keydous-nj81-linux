@@ -683,6 +683,30 @@ def _build_page():
 _PAGE = ""
 
 
+def create_server(host="127.0.0.1", port=8765):
+    """Build (but do not run) the HTTP server and build the page once.
+
+    Returns a ThreadingHTTPServer the caller must ``serve_forever()`` or
+    run in a thread. Kept separate so the GTK app window can embed the same
+    backend instead of spawning a browser.
+    """
+    global _PAGE
+    _PAGE = _build_page()
+    return ThreadingHTTPServer((host, port), Handler)
+
+
+def shutdown_server(server):
+    """Stop the HTTP server and release the device/follow threads."""
+    if server is not None:
+        try:
+            server.shutdown()
+            server.server_close()
+        except Exception:
+            pass
+    _FOLLOW.stop()
+    _close_device()
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="keydous-gui",
                                      description="Keydous NJ81 web GUI")
@@ -690,9 +714,7 @@ def main(argv=None):
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args(argv)
 
-    global _PAGE
-    _PAGE = _build_page()
-    server = ThreadingHTTPServer((args.host, args.port), Handler)
+    server = create_server(args.host, args.port)
     print(f"Keydous NJ81 GUI: http://{args.host}:{args.port}")
     print("press Ctrl-C to stop")
     try:
@@ -700,9 +722,7 @@ def main(argv=None):
     except KeyboardInterrupt:
         pass
     finally:
-        _FOLLOW.stop()
-        _close_device()
-        server.server_close()
+        shutdown_server(server)
 
 
 if __name__ == "__main__":
