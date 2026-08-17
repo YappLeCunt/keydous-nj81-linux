@@ -1,0 +1,16 @@
+pkgbase = keydous-nj81
+	pkgdesc = Open-source Linux driver and web GUI for the Keydous NJ81 keyboard - key mapping, RGB lighting, screen upload, profiles, music/screen follow
+	pkgver = 1.0.0
+	pkgrel = 1
+	url = https://github.com/YappLeCunt/keydous-nj81-linux
+	arch = any
+	license = MIT
+	makedepends = git
+	depends = python
+	depends = python-gobject
+	depends = webkit2gtk-4.1
+	optdepends = python-dbus-next: Bluetooth battery reading
+	source = keydous-nj81-1.0.0.tar.gz::https://github.com/YappLeCunt/keydous-nj81-linux/archive/refs/tags/v1.0.0.tar.gz
+	sha256sums = 9fb77b7424a5abbbbb203c547f213453eec35241a5ced5368a098e2810bf2195
+
+pkgname = keydous-nj81

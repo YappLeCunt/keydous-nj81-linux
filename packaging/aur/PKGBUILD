@@ -1,0 +1,67 @@
+# Maintainer: YappLeCunt <yapplecunt@users.noreply.github.com>
+# Contributor: YappLeCunt <yapplecunt@users.noreply.github.com>
+
+pkgname=keydous-nj81
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="Open-source Linux driver and web GUI for the Keydous NJ81 keyboard - key mapping, RGB lighting, screen upload, profiles, music/screen follow"
+arch=('any')
+url="https://github.com/YappLeCunt/keydous-nj81-linux"
+license=('MIT')
+depends=('python' 'python-gobject' 'webkit2gtk-4.1')
+optdepends=('python-dbus-next: Bluetooth battery reading')
+makedepends=('git')
+source=("$pkgname-$pkgver.tar.gz::https://github.com/YappLeCunt/keydous-nj81-linux/archive/refs/tags/v$pkgver.tar.gz")
+sha256sums=('9fb77b7424a5abbbbb203c547f213453eec35241a5ced5368a098e2810bf2195')
+
+package() {
+  cd "$srcdir/keydous-nj81-linux-$pkgver"
+
+  install -d "$pkgdir/usr/lib/keydous-nj81" \
+             "$pkgdir/usr/bin" \
+             "$pkgdir/usr/share/applications" \
+             "$pkgdir/usr/share/doc/keydous-nj81" \
+             "$pkgdir/usr/share/icons/hicolor/128x128/apps" \
+             "$pkgdir/usr/share/icons/hicolor/64x64/apps" \
+             "$pkgdir/usr/share/icons/hicolor/48x48/apps" \
+             "$pkgdir/usr/share/icons/hicolor/32x32/apps" \
+             "$pkgdir/usr/lib/udev/rules.d"
+
+  cp -r keydous keydous-driver docs icons "$pkgdir/usr/lib/keydous-nj81/"
+  chmod +x "$pkgdir/usr/lib/keydous-nj81/keydous-driver"
+
+  cat > "$pkgdir/usr/bin/keydous-nj81" <<'EOF'
+#!/usr/bin/env bash
+exec python3 /usr/lib/keydous-nj81/keydous/appwindow.py "$@"
+EOF
+  chmod +x "$pkgdir/usr/bin/keydous-nj81"
+
+  cat > "$pkgdir/usr/bin/keydous-driver" <<'EOF'
+#!/usr/bin/env bash
+exec python3 /usr/lib/keydous-nj81/keydous-driver "$@"
+EOF
+  chmod +x "$pkgdir/usr/bin/keydous-driver"
+
+  cat > "$pkgdir/usr/share/applications/keydous-nj81.desktop" <<'EOF'
+[Desktop Entry]
+Type=Application
+Version=1.0
+Name=Keydous NJ81 Driver
+GenericName=Keyboard configuration
+Comment=Control the Keydous NJ81 keyboard: key mapping, RGB lighting, screen image upload, profiles, power, backup/restore and music/screen follow
+Exec=/usr/bin/keydous-nj81
+Icon=keydous-nj81
+Terminal=false
+Categories=Settings;
+Keywords=keydous;nj81;keyboard;rgb;mechanical;driver;settings;
+StartupNotify=true
+StartupWMClass=keydousnj81
+EOF
+
+  install -m644 icons/keydous-nj81.png     "$pkgdir/usr/share/icons/hicolor/128x128/apps/keydous-nj81.png"
+  install -m644 icons/keydous-nj81-64.png  "$pkgdir/usr/share/icons/hicolor/64x64/apps/keydous-nj81.png"
+  install -m644 icons/keydous-nj81-48.png  "$pkgdir/usr/share/icons/hicolor/48x48/apps/keydous-nj81.png"
+  install -m644 icons/keydous-nj81-32.png  "$pkgdir/usr/share/icons/hicolor/32x32/apps/keydous-nj81.png"
+  install -m644 udev/50-keydous.rules      "$pkgdir/usr/lib/udev/rules.d/50-keydous.rules"
+  install -m644 README.md                  "$pkgdir/usr/share/doc/keydous-nj81/README.md"
+}

@@ -1,0 +1,33 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Architectures: amd64
+Codename: stable
+Components: main
+Date: Mon, 17 Aug 2026 10:07:46 +0000
+Label: keydous-nj81
+Origin: Keydous NJ81 Driver
+Suite: stable
+MD5Sum:
+ a83badfba9dae2178e4d52625ef0b2f0              155 Release
+ 6413127e642c2a2260aab896bbac46a5             1026 main/binary-amd64/Packages
+ 81f8188e30104c04557c35b40246cc74              696 main/binary-amd64/Packages.gz
+SHA1:
+ 45b51b8811deb384a7f3668ff2253a724619886a              155 Release
+ 4603a0e8c47faba091d13055ddacaa6669b65d91             1026 main/binary-amd64/Packages
+ cb4a4f2a2a871b921eb4b5779aa2bc199d887f0a              696 main/binary-amd64/Packages.gz
+SHA256:
+ 4b8ebffb538e48bab22768b3adc066c4c0338ad4be446207a72a00b12fc7510f              155 Release
+ db60f5c8a709d74084bc661dbcba88bff9ee749190b958da41c57812fb4174b3             1026 main/binary-amd64/Packages
+ ff175cdcb57f67d100c885aeb555b6c639a262a5cb0ec93a5f915cb237caccb3              696 main/binary-amd64/Packages.gz
+SHA512:
+ a88bb8e8fec358ad8eb6ebc288b5e4c939ccb9660e937cfef263b6599a73070869982b3390e46e6a120afe59afcbde796a00dab2c78b4824ad6398cb4777ddd8              155 Release
+ 6936b11ab465187cb6c2fa83d0831887ecf9b31e1c5255cc2282a9d00a944ea76695bd90eb2385eacf493872d3bbede1dad3ca3cf6fef8d653d95bd179a5d601             1026 main/binary-amd64/Packages
+ b994a6f6a67b21d50c501c745baee2416bb640606214c28475651caad4315af9d9011e6f0d7fcbc3f60b5a6a8f5636cac2d86153c7e6b39b8dd65c0163cb1064              696 main/binary-amd64/Packages.gz
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQRPTaQO3p6XszX1BZ8HAvXxyySgJwUCaoLdcgAKCRAHAvXxyySg
+JxbLAP4kcWuFDRk6DTGcJdSbn1iDmixHQ1PIUUv6Hue6HS5h1AEAk4vnjWzxawfW
+7Ib0lTLLpVT28vyEsarutwIDvjJ0Owo=
+=4tFq
+-----END PGP SIGNATURE-----
