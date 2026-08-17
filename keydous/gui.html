@@ -1,0 +1,1376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Keydous NJ81 Control Deck</title>
+<style>
+:root {
+  --ink: #f3f0e8;
+  --muted: #9ca3aa;
+  --dim: #68727a;
+  --bg: #101416;
+  --bg-glow: #26343a;
+  --panel: #171d20;
+  --panel-2: #1d2528;
+  --line: #2d393d;
+  --line-soft: #273134;
+  --accent: #e2a45e;
+  --accent-2: #f2c58e;
+  --good: #76c69e;
+  --bad: #df7c74;
+  --shadow: 0 20px 60px rgba(0, 0, 0, .22);
+  --rail-bg: rgba(13, 17, 19, .82);
+  --card-a: rgba(29, 37, 40, .94);
+  --card-b: rgba(20, 26, 28, .94);
+  --input-bg: #101618;
+  --btn-bg: #2a3435;
+  --btn-border: #53605e;
+  --btn-hover: #344142;
+  --primary-ink: #1e1710;
+  --nav-active: #252c2c;
+  --nav-hover: #1a2225;
+  --nav-active-line: #43504f;
+  --quick-bg: #1b2325;
+  --key-a: #293437;
+  --key-b: #20292b;
+  --key-ink: #d8dfda;
+  --key-phys: #899695;
+  --key-border: #445154;
+  --key-hover: #3a4545;
+  --key-sel: #5b4833;
+  --pick-bg: #151b1d;
+  --pick-hover: #20282a;
+  --tab-active: #303a3a;
+  --tab-line: #69736d;
+  --stage-bg: #111719;
+  --stage-wrap: #0e1315;
+  --switch-line: #273134;
+  --danger-line: #553531;
+  --danger-ink: #efaaa2;
+  --danger-border: #77443f;
+  --danger-bg: #3a2423;
+  --danger-hover: #4b2a28;
+  --danger-soft: #ffd5cf;
+  --toast-bg: #263133;
+  --toast-border: #5a6966;
+  --toast-error-border: #86504a;
+  --toast-error-ink: #ffd5cf;
+}
+body.light {
+  --ink: #23272a;
+  --muted: #5c666b;
+  --dim: #8a9498;
+  --bg: #f3f0e9;
+  --bg-glow: #e9e0cd;
+  --panel: #ffffff;
+  --panel-2: #f7f4ec;
+  --line: #d9d3c6;
+  --line-soft: #e5dfd3;
+  --accent: #a96422;
+  --accent-2: #c67f2f;
+  --good: #2e9e6b;
+  --bad: #c94f46;
+  --shadow: 0 20px 60px rgba(100, 80, 45, .12);
+  --rail-bg: rgba(255, 255, 255, .82);
+  --card-a: rgba(255, 255, 255, .98);
+  --card-b: rgba(249, 246, 240, .98);
+  --input-bg: #ffffff;
+  --btn-bg: #e9e4d8;
+  --btn-border: #bdb6a6;
+  --btn-hover: #e2dccd;
+  --primary-ink: #ffffff;
+  --nav-active: #ece6d9;
+  --nav-hover: #f0ece1;
+  --nav-active-line: #bfb7a5;
+  --quick-bg: #f7f4ec;
+  --key-a: #eae5da;
+  --key-b: #ded8ca;
+  --key-ink: #33393d;
+  --key-phys: #7b8589;
+  --key-border: #c7c0b0;
+  --key-hover: #d9d2c2;
+  --key-sel: #e3c59a;
+  --pick-bg: #fbf9f4;
+  --pick-hover: #efe9dc;
+  --tab-active: #ece6d9;
+  --tab-line: #b7b0a0;
+  --stage-bg: #f1ede3;
+  --stage-wrap: #f6f3ea;
+  --switch-line: #e5dfd3;
+  --danger-line: #d8b6b0;
+  --danger-ink: #a04a42;
+  --danger-border: #c9938b;
+  --danger-bg: #f4e3e0;
+  --danger-hover: #ecd2cd;
+  --danger-soft: #8c3a33;
+  --toast-bg: #ffffff;
+  --toast-border: #c9c2b2;
+  --toast-error-border: #c9938b;
+  --toast-error-ink: #8c3a33;
+}
+* { box-sizing: border-box; }
+html, body { min-height: 100%; }
+body {
+  margin: 0;
+  background: radial-gradient(circle at 84% -12%, var(--bg-glow) 0, transparent 32%), var(--bg);
+  color: var(--ink);
+  font: 14px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+button, input, select { font: inherit; }
+button { cursor: pointer; }
+button:disabled { cursor: wait; opacity: .55; }
+.app { display: grid; grid-template-columns: 230px minmax(0, 1fr); min-height: 100vh; }
+.rail {
+  border-right: 1px solid var(--line);
+  background: var(--rail-bg);
+  padding: 28px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.brand { padding: 0 10px; }
+.brand-mark {
+  width: 34px; height: 34px; border: 1px solid var(--accent);
+  border-radius: 10px 10px 10px 3px; margin-bottom: 15px;
+  position: relative;
+}
+.brand-mark:after { content: ""; position: absolute; width: 9px; height: 9px;
+  background: var(--accent); border-radius: 50%; right: 7px; bottom: 7px; }
+.brand h1 { margin: 0; font-size: 17px; letter-spacing: .03em; }
+.brand p { margin: 4px 0 0; color: var(--muted); font-size: 11px; }
+.nav { display: grid; gap: 5px; }
+.nav button {
+  color: var(--muted); background: transparent; border: 1px solid transparent;
+  border-radius: 8px; text-align: left; padding: 10px 11px;
+}
+.nav button:hover { color: var(--ink); background: var(--nav-hover); }
+.nav button.active { color: var(--ink); background: var(--nav-active); border-color: var(--nav-active-line); }
+.nav button.active:before { content: ""; display: inline-block; width: 5px; height: 5px;
+  border-radius: 50%; background: var(--accent); vertical-align: 2px; margin-right: 9px; }
+.nav button:not(.active):before { content: ""; display: inline-block; width: 5px; height: 5px;
+  border-radius: 50%; background: var(--dim); vertical-align: 2px; margin-right: 9px; }
+.rail-foot { margin-top: auto; padding: 0 10px; color: var(--dim); font-size: 11px; }
+.main { min-width: 0; padding: 27px clamp(18px, 4vw, 58px) 50px; }
+.topbar { display: flex; justify-content: space-between; gap: 20px; align-items: flex-start; margin-bottom: 27px; }
+.eyebrow { text-transform: uppercase; letter-spacing: .16em; color: var(--accent); font-size: 10px; font-weight: 700; }
+.topbar h2 { margin: 5px 0 4px; font-size: clamp(24px, 3vw, 34px); font-weight: 650; letter-spacing: -.03em; }
+.topbar p { margin: 0; color: var(--muted); }
+.connection { display: flex; align-items: center; gap: 9px; color: var(--muted); white-space: nowrap; padding-top: 9px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dim); box-shadow: 0 0 0 4px rgba(104,114,122,.12); }
+.dot.good { background: var(--good); box-shadow: 0 0 0 4px rgba(118,198,158,.12); }
+.dot.bad { background: var(--bad); box-shadow: 0 0 0 4px rgba(223,124,116,.12); }
+.view { display: none; }
+.view.active { display: block; }
+.grid { display: grid; gap: 14px; }
+.grid.metrics { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.card { background: linear-gradient(145deg, var(--card-a), var(--card-b));
+  border: 1px solid var(--line); border-radius: 13px; padding: 19px; box-shadow: var(--shadow); }
+.metric-label { text-transform: uppercase; letter-spacing: .12em; color: var(--dim); font-size: 10px; font-weight: 700; }
+.metric-value { margin-top: 7px; font-size: 22px; font-weight: 650; letter-spacing: -.03em; }
+.metric-note { color: var(--muted); font-size: 11px; margin-top: 2px; }
+.section-head { display: flex; justify-content: space-between; align-items: baseline; gap: 15px; margin: 27px 0 11px; }
+.section-head h3 { margin: 0; font-size: 16px; }
+.section-head p { margin: 0; color: var(--muted); font-size: 12px; }
+.split { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(260px, .65fr); gap: 14px; }
+.quick-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.quick {
+  text-align: left; padding: 15px; min-height: 102px; color: var(--ink);
+  background: var(--quick-bg); border: 1px solid var(--line); border-radius: 10px;
+}
+.quick:hover { border-color: var(--btn-border); transform: translateY(-1px); }
+.quick strong { display: block; margin-bottom: 6px; color: var(--accent-2); }
+.quick span { color: var(--muted); font-size: 12px; }
+.note { border-left: 2px solid var(--accent); padding-left: 12px; color: var(--muted); font-size: 12px; }
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+.toolbar-spacer { flex: 1; }
+label.field { color: var(--muted); font-size: 12px; display: grid; gap: 5px; }
+select, input[type="text"], input[type="search"] {
+  background: var(--input-bg); color: var(--ink); border: 1px solid var(--line);
+  border-radius: 7px; padding: 8px 10px; outline: none;
+}
+select:focus, input:focus { border-color: var(--accent); }
+input[type="range"] { accent-color: var(--accent); }
+input[type="color"] { width: 43px; height: 36px; border: 1px solid var(--line); border-radius: 7px;
+  background: var(--input-bg); padding: 3px; }
+.btn { border: 1px solid var(--btn-border); color: var(--ink); background: var(--btn-bg); padding: 8px 13px; border-radius: 7px; }
+.btn:hover { border-color: var(--accent); background: var(--btn-hover); }
+.btn.primary { background: var(--accent); color: var(--primary-ink); border-color: var(--accent); font-weight: 700; }
+.btn.primary:hover { background: var(--accent-2); }
+.btn.ghost { background: transparent; border-color: var(--line); }
+.btn.danger { color: var(--danger-soft); border-color: var(--danger-border); background: var(--danger-bg); }
+.btn.danger:hover { border-color: var(--bad); background: var(--danger-hover); }
+.pill { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); border: 1px solid var(--line);
+  border-radius: 99px; padding: 4px 9px; font-size: 11px; }
+.keyboard-wrap { overflow-x: auto; padding: 13px 0 8px; }
+.keyboard-stage { position: relative; margin: 0 auto; min-width: 710px; }
+.key {
+  position: absolute; border: 1px solid var(--key-border); border-radius: 7px;
+  background: linear-gradient(145deg, var(--key-a), var(--key-b)); color: var(--key-ink);
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  padding: 3px; cursor: pointer; user-select: none; overflow: hidden;
+  font-size: 11px; font-weight: 600; line-height: 1.1; white-space: nowrap;
+  transition: border-color .12s, background .12s, transform .12s;
+}
+.key.compact { font-size: 8px; font-weight: 500; }
+.light-stage { min-width: 0; }
+.light-stage .key { cursor: default; border-color: rgba(255, 255, 255, .12);
+  background: rgba(255, 255, 255, .04); color: transparent; padding: 0;
+  font-size: 0; transition: background .05s linear, box-shadow .05s linear;
+  box-shadow: 0 0 6px rgba(0, 0, 0, .35); }
+.light-stage .key.lit { color: transparent; }
+.swatches { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
+.swatch { width: 20px; height: 20px; border-radius: 5px; cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, .25); }
+.swatch:hover { transform: scale(1.15); }
+.key.reserved { border-style: dashed; border-color: var(--accent); }
+.key.reserved:after {
+  content: ""; position: absolute; top: 3px; right: 3px;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent); box-shadow: 0 0 4px var(--accent);
+}
+.key:hover { border-color: var(--accent); background: var(--key-hover); transform: translateY(-1px); z-index: 2; }
+.key.selected { border-color: var(--accent-2); background: var(--key-sel); box-shadow: 0 0 0 2px rgba(226,164,94,.18); z-index: 3; }
+.key .physical { display: block; color: var(--key-phys); font-size: 8px; font-weight: 400; margin-top: 3px; }
+.key.compact .physical { font-size: 7px; }
+.map-layout { display: grid; grid-template-columns: minmax(0, 1fr) 350px; gap: 14px; }
+.map-side { min-width: 0; }
+.key-detail { min-height: 94px; display: flex; flex-direction: column; justify-content: center; }
+.key-detail h3 { margin: 0 0 5px; font-size: 19px; }
+.key-detail p { margin: 0; color: var(--muted); font-size: 12px; }
+.tabs { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 11px; }
+.tab { border: 1px solid var(--line); background: transparent; color: var(--muted); padding: 7px 10px; border-radius: 7px; }
+.tab.active { color: var(--ink); background: var(--tab-active); border-color: var(--tab-line); }
+.picker { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; max-height: 410px; overflow: auto; padding-right: 2px; }
+.pick { text-align: left; color: var(--muted); background: var(--pick-bg); border: 1px solid var(--line); border-radius: 6px; padding: 8px; }
+.pick:hover { color: var(--ink); background: var(--pick-hover); border-color: var(--btn-border); }
+.picker-empty { color: var(--muted); grid-column: 1/-1; padding: 12px 0; }
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.form-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.range-line { display: grid; grid-template-columns: 105px 1fr 32px; align-items: center; gap: 10px; color: var(--muted); font-size: 12px; }
+.range-line output { color: var(--ink); text-align: right; }
+.effect-preview { border-radius: 9px; min-height: 112px; padding: 15px; background: var(--stage-bg); border: 1px solid var(--line); }
+.effect-swatch { width: 100%; height: 47px; border-radius: 6px; margin-top: 13px; background: #e2a45e; box-shadow: 0 0 28px rgba(226,164,94,.24); }
+.picture-canvas-wrap { background: var(--stage-wrap); border: 1px solid var(--line); border-radius: 10px; padding: 10px; overflow: hidden; }
+#pictureCanvas { display: block; width: 100%; height: auto; border-radius: 6px; background: var(--stage-bg); }
+#screenCanvas { display: block; width: 100%; height: auto; aspect-ratio: 2 / 1; border-radius: 6px; background: #000; }
+.upload-row { display: flex; align-items: end; flex-wrap: wrap; gap: 12px; margin-top: 15px; }
+input[type="file"] { max-width: 100%; color: var(--muted); font-size: 12px; }
+.switch-list { display: grid; gap: 8px; }
+.switch { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 11px 0; border-bottom: 1px solid var(--switch-line); color: var(--muted); }
+.switch:last-child { border-bottom: 0; }
+.switch input { accent-color: var(--accent); }
+.danger-zone { border-color: var(--danger-line); }
+.danger-zone h3 { color: var(--danger-ink); }
+.status-line { min-height: 20px; color: var(--accent-2); font-size: 12px; }
+.status-line.error { color: var(--bad); }
+.muted { color: var(--muted); }
+.small { font-size: 11px; }
+.toast { position: fixed; right: 22px; bottom: 22px; max-width: 360px; padding: 11px 14px;
+  border: 1px solid var(--toast-border); border-radius: 8px; background: var(--toast-bg); color: var(--ink);
+  box-shadow: var(--shadow); opacity: 0; transform: translateY(10px); pointer-events: none; transition: .18s; }
+.toast.show { opacity: 1; transform: translateY(0); }
+.toast.error { border-color: var(--toast-error-border); color: var(--toast-error-ink); }
+.modal-backdrop { position: fixed; inset: 0; background: rgba(0, 0, 0, .45); display: flex;
+  align-items: center; justify-content: center; z-index: 90; padding: 18px; }
+.modal-backdrop[hidden] { display: none; }
+.modal { max-width: 430px; width: 100%; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--panel); padding: 18px; box-shadow: var(--shadow); }
+.modal h3 { margin: 0 0 8px; }
+.modal p { margin: 0 0 16px; }
+@media (max-width: 980px) {
+  .app { grid-template-columns: 1fr; }
+  .rail { border-right: 0; border-bottom: 1px solid var(--line); padding: 16px; gap: 15px; }
+  .brand { display: flex; align-items: center; gap: 12px; padding: 0; }
+  .brand-mark { margin: 0; }
+  .nav { grid-template-columns: repeat(5, minmax(100px, 1fr)); overflow-x: auto; }
+  .rail-foot { display: none; }
+  .main { padding: 22px 16px 40px; }
+  .map-layout, .split { grid-template-columns: 1fr; }
+}
+@media (max-width: 650px) {
+  .topbar { display: block; }
+  .connection { padding-top: 12px; }
+  .grid.metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .form-grid { grid-template-columns: 1fr; }
+  .nav { grid-template-columns: repeat(5, 1fr); }
+  .nav button { padding: 8px 6px; font-size: 11px; text-align: center; }
+  .nav button:before { display: none !important; }
+  .quick-grid { grid-template-columns: 1fr; }
+  .picker { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="rail">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <div><h1>NJ81 Control Deck</h1><p>Linux device studio</p></div>
+    </div>
+    <nav class="nav" aria-label="Main navigation">
+      <button class="active" data-view="overview">Overview</button>
+      <button data-view="mapping">Key mapping</button>
+      <button data-view="lighting">Lighting</button>
+      <button data-view="picture">Image studio</button>
+      <button data-view="settings">Settings</button>
+    </nav>
+    <div class="rail-foot">USB feature interface<br>Local-only control</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">Keydous / YC500</div>
+        <h2 id="pageTitle">A calmer way to tune your board.</h2>
+        <p id="pageSubtitle">Read the keyboard state before changing it.</p>
+      </div>
+      <div class="connection"><span id="connectionDot" class="dot"></span><span id="connectionText">Checking device...</span><button class="btn ghost" id="themeButton">Light mode</button><button class="btn ghost" id="refreshButton">Refresh</button></div>
+    </header>
+
+    <section class="view active" id="view-overview">
+      <div class="grid metrics">
+        <div class="card"><div class="metric-label">Firmware</div><div class="metric-value" id="metricFirmware">--</div><div class="metric-note">NJ81 controller</div></div>
+        <div class="card"><div class="metric-label">Battery</div><div class="metric-value" id="metricBattery">--</div><div class="metric-note" id="metricBatteryNote">Waiting for device</div></div>
+        <div class="card"><div class="metric-label">Profile</div><div class="metric-value" id="metricProfile">--</div><div class="metric-note">Active layout (0..5)</div></div>
+        <div class="card"><div class="metric-label">Report rate</div><div class="metric-value" id="metricRate">--</div><div class="metric-note">USB polling</div></div>
+        <div class="card"><div class="metric-label">Current effect</div><div class="metric-value" id="metricEffect">--</div><div class="metric-note" id="metricEffectNote">No LED state read</div></div>
+      </div>
+      <div class="section-head"><h3>Device controls</h3><p>Changes are written to the keyboard, not just this browser.</p></div>
+      <div class="split">
+        <div class="card">
+          <div class="quick-grid">
+            <button class="quick" data-go="mapping"><strong>Map a key</strong><span>Choose a physical key and assign a normal, media, mouse, or combo action.</span></button>
+            <button class="quick" data-go="lighting"><strong>Shape the light</strong><span>Use every NJ81 effect, speed level, brightness level, direction, and color.</span></button>
+            <button class="quick" data-go="picture"><strong>Paint the board</strong><span>Upload an image, preview its per-key colors, and store it in one of five layers.</span></button>
+            <button class="quick" data-go="settings"><strong>Reset carefully</strong><span>Return profiles, mappings, macros, and lighting settings to factory defaults.</span></button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="metric-label">Read first</div>
+          <p class="note" style="margin-top:14px">The NJ81 keeps these settings onboard. A change made over USB is visible when the same keyboard is used wirelessly.</p>
+          <div class="status-line" id="overviewMessage"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="metric-label">Quick light mode</div>
+        <div class="form-row" style="margin-top:12px">
+          <label class="field" style="flex:1">Mode<select id="overviewLightMode"></select></label>
+          <label class="field">Color<input type="color" id="overviewLightColor" value="#ffffff"></label>
+          <button class="btn primary" id="overviewLightApply">Apply</button>
+          <span class="status-line" id="overviewLightMessage"></span>
+        </div>
+      </div>
+      <div class="card" style="margin-top:14px">
+        <div class="metric-label">Active profile</div>
+        <div class="form-row" style="margin-top:12px">
+          <label class="field" style="flex:1">Switch profile<select id="profileSel"></select></label>
+          <button class="btn primary" id="profileApply">Switch</button>
+          <span class="status-line" id="profileMessage"></span>
+        </div>
+        <p class="muted small">Six onboard profiles. Switching reloads the key mapping, Fn layer, and lighting for that profile. The keyboard uses the selected profile until you change it.</p>
+      </div>
+    </section>
+
+    <section class="view" id="view-mapping">
+      <div class="section-head"><div><h3>Key mapping</h3><p>Click a physical key, then choose the action to store in its matrix slot. The base layer is fully writable; Fn keys with native shortcuts warn before overwriting.</p></div><div class="toolbar"><label class="field" style="flex:0 0 auto">Profile<select id="mapProfileSel"></select></label><span class="pill" id="layerPill">Base layer</span><button class="btn ghost" id="reloadMatrix">Reload matrix</button></div></div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="toolbar"><button class="tab active" data-layer="base">Base layer</button><button class="tab" data-layer="fn">Fn layer</button><span class="muted small" id="layerNote">The base layer is writable. Reset restores the vendor default.</span></div>
+        <div class="keyboard-wrap"><div class="keyboard-stage" id="keyboardStage"></div></div>
+      </div>
+      <div class="map-layout">
+        <div class="card key-detail" id="keyDetail"><h3>Select a key</h3><p>The live matrix assignment will appear here.</p></div>
+        <div class="card map-side">
+          <div class="toolbar" style="margin-bottom:11px"><input type="search" id="pickerSearch" placeholder="Search actions" aria-label="Search actions"><span class="toolbar-spacer"></span><button class="btn primary" id="applyMapping">Apply</button><button class="btn" id="resetMapping">Reset</button><button class="btn danger" id="disableMapping">Disable</button></div>
+          <div class="tabs" id="pickerTabs"><button class="tab active" data-picker="keys">Keys</button><button class="tab" data-picker="media">Media</button><button class="tab" data-picker="mouse">Mouse</button><button class="tab" data-picker="combos">Combos</button><button class="tab" data-picker="special">Special</button></div>
+          <div class="picker" id="picker"></div>
+          <div class="status-line" id="mappingMessage"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-lighting">
+      <div class="section-head"><div><h3>Lighting laboratory</h3><p>Values are constrained to the NJ81 vendor range: speed and level 0..4. Dazzle cycles colors automatically.</p></div><span class="pill" id="lightReadback">Not read</span></div>
+      <div class="form-grid">
+        <div class="card">
+          <div class="form-row" style="margin-bottom:18px"><label class="field" style="flex:1">Effect<select id="lightMode"></select></label><label class="field" id="lightOptionWrap" style="flex:1">Option<select id="lightOption"></select></label></div>
+          <div class="range-line"><span>Speed</span><input id="lightSpeed" type="range" min="0" max="4" step="1" value="0"><output id="lightSpeedOut">0</output></div>
+          <div class="muted small" style="margin:3px 0 15px 115px">0 is fastest, 4 is slowest</div>
+          <div class="range-line"><span>Effect level</span><input id="lightValue" type="range" min="0" max="4" step="1" value="4"><output id="lightValueOut">4</output></div>
+          <div class="form-row" style="margin-top:20px"><label class="field">Color<input type="color" id="lightColor" value="#ffffff"></label><span class="swatches" id="lightPresets"></span><label class="field" id="lightDazzleWrap" style="flex:1;display:flex;align-items:center;gap:8px">Dazzle (color cycle)<input type="checkbox" id="lightDazzle"></label></div>
+          <div class="muted small" style="margin-top:8px">Exact RGB is used for color-capable modes. Dazzle makes the effect cycle colors on its own (vendor "炫彩").</div>
+          <div class="form-row" style="margin-top:20px" id="followRow">
+            <button class="btn primary" id="followStart">Start follow</button>
+            <button class="btn danger" id="followStop" style="display:none">Stop follow</button>
+            <span class="status-line" id="followMessage"></span>
+            <canvas id="followViz" width="220" height="34" style="flex:0 0 auto"></canvas>
+          </div>
+          <div class="toolbar" style="margin-top:20px"><button class="btn primary" id="applyLight">Apply effect</button><button class="btn ghost" id="readLight">Read current</button><span class="status-line" id="lightMessage"></span></div>
+        </div>
+        <div class="card effect-preview"><div class="metric-label">Live preview</div><div style="margin-top:7px;font-size:18px" id="lightPreviewName">--</div><div class="muted small" id="lightPreviewDetail">Select an effect to see it on the board.</div><div class="keyboard-stage light-stage" id="lightStage"></div><div class="effect-swatch" id="effectSwatch"></div></div>
+      </div>
+      <div class="card" style="margin-top:14px"><div class="metric-label">About the controls</div><p class="muted small" style="margin:9px 0 0">The color byte is only honored when the effect parameter selects normal RGB; Dazzle (param 6) replaces it with automatic color cycling. The NJ81 press-action, coverage, and press-action-off modes intentionally use parameter 0.</p></div>
+    </section>
+
+    <section class="view" id="view-picture">
+      <div class="section-head"><div><h3>Image studio</h3><p>Paint the board keys, or put a picture on the built-in screen.</p></div><span class="pill" id="screenPill">Screen: checking...</span></div>
+      <div class="card" style="margin-bottom:14px">
+        <div class="metric-label">Built-in screen image (RGB565, 160x80)</div>
+        <div class="picture-canvas-wrap" style="max-width:480px"><canvas id="screenCanvas" width="160" height="80"></canvas></div>
+        <div class="upload-row"><label class="field">Image file<input type="file" id="screenFile" accept="image/png,image/jpeg,image/gif,image/webp"></label><label class="field">Store in<select id="screenLayer"><option value="0">Picture 1</option><option value="1">Picture 2</option><option value="2">Picture 3</option><option value="3">Picture 4</option><option value="4">Picture 5</option></select></label><button class="btn primary" id="applyScreen">Upload to screen</button></div>
+        <p class="muted small" style="margin-bottom:0">The image is zoomed to fill the 160x80 screen (cropping overflow), converted to RGB565 column-major big-endian order, and streamed with the vendor handshake. The screen enters custom-image view automatically.</p>
+        <p class="muted small" style="margin-bottom:0">Keyboard shortcuts: Fn+Right Ctrl opens/closes the screen, Fn+Delete enters/exits custom-screen mode, and Fn+PgDn changes the background color.</p>
+        <div class="status-line" id="screenMessage"></div>
+      </div>
+      <div class="card">
+        <div class="metric-label">Per-key RGB layers</div>
+        <div class="picture-canvas-wrap" style="overflow:auto;max-height:430px"><canvas id="pictureCanvas" width="870" height="288"></canvas></div>
+        <div class="upload-row"><label class="field">Zoom<input type="range" id="pictureZoom" min="50" max="300" value="100"></label><span class="muted small" id="pictureZoomOut">100%</span><label class="field">Image file<input type="file" id="pictureFile" accept="image/png,image/jpeg,image/gif,image/webp"></label><label class="field">Store in<select id="pictureLayer"><option value="0">Picture 1</option><option value="1">Picture 2</option><option value="2">Picture 3</option><option value="3">Picture 4</option><option value="4">Picture 5</option></select></label><button class="btn primary" id="applyPicture">Upload image to keyboard</button></div>
+        <p class="muted small" style="margin-bottom:0">The browser samples the center of each physical key. Uploading writes the colors first, then activates the selected user-picture layer.</p>
+        <div class="status-line" id="pictureMessage"></div>
+      </div>
+    </section>
+
+    <section class="view" id="view-settings">
+      <div class="section-head"><div><h3>Keyboard settings</h3><p>Power, backups, device-level options, and the irreversible action.</p></div></div>
+      <div class="split">
+        <div class="card">
+          <div class="metric-label">Performance and behavior</div>
+          <div class="form-row" style="margin:15px 0 12px"><label class="field">Report rate<select id="reportRate"><option value="125">125 Hz</option><option value="250">250 Hz</option><option value="500">500 Hz</option><option value="1000">1000 Hz</option></select></label><button class="btn" id="applyRate">Apply rate</button></div>
+          <div class="switch-list">
+            <label class="switch">Win key lock<input type="checkbox" data-option="win_key_lock"></label>
+            <label class="switch">WASD / arrow exchange<input type="checkbox" data-option="wasd_arrow_exchange"></label>
+            <label class="switch">LED off<input type="checkbox" data-option="led_off"></label>
+            <label class="switch">Side LED off<input type="checkbox" data-option="s_led_off"></label>
+            <label class="switch">Keyboard lock<input type="checkbox" data-option="keyboard_lock"></label>
+          </div>
+          <div class="status-line" id="settingsMessage"></div>
+        </div>
+        <div class="card">
+          <div class="metric-label">Power</div>
+          <div class="form-row" style="margin:15px 0 10px"><label class="field">Debounce (ms)<input type="number" id="pwDebounce" min="0" max="100" value="1"></label><label class="field">Low-battery warn (%)<input type="number" id="pwBatteryLp" min="0" max="100" value="20"></label></div>
+          <div class="metric-label" style="margin-top:6px">Sleep timers (minutes; 0 = never)</div>
+          <div class="form-row" style="margin:12px 0 6px"><label class="field">BT light sleep<input type="number" id="pwSleepBt" min="0" max="60" value="0"></label><label class="field">2.4G light sleep<input type="number" id="pwSleep24" min="0" max="60" value="0"></label></div>
+          <div class="form-row" style="margin-bottom:6px"><label class="field">BT deep sleep<input type="number" id="pwDeepBt" min="0" max="60" value="0"></label><label class="field">2.4G deep sleep<input type="number" id="pwDeep24" min="0" max="60" value="0"></label></div>
+          <div class="toolbar"><button class="btn primary" id="applyPower">Apply power settings</button><button class="btn ghost" id="readPower">Read current</button><span class="status-line" id="powerMessage"></span></div>
+        </div>
+        <div class="card">
+          <div class="metric-label">Backup &amp; restore</div>
+          <p class="muted small" style="margin:12px 0">Download all six profile mappings, the Fn layer, lighting, power settings, and the five per-key picture layers as a JSON file.</p>
+          <div class="toolbar"><button class="btn primary" id="backupDownload">Download backup</button><label class="btn">Restore from file<input type="file" id="backupFile" accept=".json" hidden></label><span class="status-line" id="backupMessage"></span></div>
+        </div>
+        <div class="card">
+          <div class="metric-label">Bluetooth battery</div>
+          <p class="muted small" style="margin:12px 0">When the board is paired over BT, its radio reports the real battery level (the USB port reports 0% while charging). Enter the MAC and read it.</p>
+          <div class="form-row"><label class="field">Device address<input id="btAddress" placeholder="AA:BB:CC:DD:EE:FF" style="text-transform:uppercase"></label><button class="btn primary" id="btBattery">Read BT battery</button></div>
+          <div class="status-line" id="btMessage"></div>
+        </div>
+        <div class="card danger-zone">
+          <div class="metric-label">Destructive action</div>
+          <h3>Factory reset</h3>
+          <p class="muted small">This sends the vendor reset command and waits for the keyboard to rewrite defaults. It can erase stored mappings, macros, profiles, image layers, and lighting settings. It does not flash firmware.</p>
+          <button class="btn danger" id="factoryReset">Reset keyboard to factory defaults</button>
+          <div class="status-line" id="resetMessage"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<div class="modal-backdrop" id="warnBackdrop" hidden>
+  <div class="modal">
+    <h3>Overwrite a native Fn shortcut?</h3>
+    <p id="warnText"></p>
+    <div class="toolbar"><button class="btn" id="warnPick">Pick another key</button><span class="toolbar-spacer"></span><button class="btn danger" id="warnGo">Overwrite anyway</button></div>
+  </div>
+</div>
+<script>
+const LAYOUT = __LAYOUT__;
+const HID_NAMES = __HIDNAMES__;
+const POSMAP = __POSMAP__;
+const MEDIA = __MEDIA__;
+const MOUSE = __MOUSE__;
+const COMBOS = __COMBOS__;
+const SPECIAL = __SPECIAL__;
+const LIGHT_MODES = __LIGHT_MODES__;
+const LIGHT_OPTIONS = __LIGHT_OPTIONS__;
+const LIGHT_DAZZLE = __LIGHT_DAZZLE__;
+const LIGHT_PRESETS = __LIGHT_PRESETS__;
+
+let status = null;
+let matrix = [];
+let reservedKeys = new Set();
+let current = null;
+let fnLayer = false;
+let profile = 0;
+let lastPicLayer = null;
+let profileBusy = false;
+let pickerTab = "keys";
+let pictureImage = null;
+let picturePixels = [];
+let screenImage = null;
+let toastTimer = null;
+
+const $ = id => document.getElementById(id);
+const esc = text => String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const keyName = hid => HID_NAMES[hid] || HID_NAMES[String(hid)] || ("0x" + Number(hid).toString(16));
+const modeTitle = name => name.replaceAll("_", " ").replace(/\b\w/g, c => c.toUpperCase());
+
+async function api(path, options) {
+  const response = await fetch(path, options);
+  let data;
+  try { data = await response.json(); } catch (_) { data = {ok:false, error:"invalid server response"}; }
+  if (!response.ok || data.ok === false) throw new Error(data.error || ("request failed: " + response.status));
+  return data;
+}
+
+function showToast(message, error = false) {
+  const node = $("toast");
+  node.textContent = message;
+  node.className = "toast show" + (error ? " error" : "");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => node.className = "toast", 3500);
+}
+
+function setMessage(id, text, error = false) {
+  const node = $(id);
+  node.textContent = text || "";
+  node.classList.toggle("error", !!error);
+}
+
+function jsonPost(path, body) {
+  return api(path, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(body)});
+}
+
+function showView(view) {
+  document.querySelectorAll(".view").forEach(node => node.classList.toggle("active", node.id === "view-" + view));
+  document.querySelectorAll(".nav button").forEach(node => node.classList.toggle("active", node.dataset.view === view));
+  const titles = {
+    overview: ["A calmer way to tune your board.", "Read the keyboard state before changing it."],
+    mapping: ["Give every key a job.", "Assignments are written directly to the active matrix."],
+    lighting: ["Make the light behave.", "All 25 NJ81 LED modes are available here."],
+    picture: ["Paint a scene key by key.", "The keyboard stores RGB values, not a conventional bitmap."],
+    settings: ["Keep the hardware predictable.", "Device options, report rate, and factory reset."],
+  };
+  $("pageTitle").textContent = titles[view][0];
+  $("pageSubtitle").textContent = titles[view][1];
+  if (view === "mapping") loadMatrix();
+}
+
+document.querySelectorAll(".nav button").forEach(node => node.onclick = () => showView(node.dataset.view));
+document.querySelectorAll("[data-go]").forEach(node => node.onclick = () => showView(node.dataset.go));
+$("refreshButton").onclick = () => { loadStatus(); if (document.getElementById("view-mapping").classList.contains("active")) loadMatrix(); };
+
+function applyTheme(light) {
+  document.body.classList.toggle("light", light);
+  $("themeButton").textContent = light ? "Dark mode" : "Light mode";
+  drawPicture();
+}
+$("themeButton").onclick = () => {
+  const light = !document.body.classList.contains("light");
+  applyTheme(light);
+  try { localStorage.setItem("keydous-theme", light ? "light" : "dark"); } catch (_) {}
+};
+(function initTheme() {
+  let light = false;
+  try { light = localStorage.getItem("keydous-theme") === "light"; } catch (_) {}
+  applyTheme(light);
+})();
+
+function updateStatus(state) {
+  status = state;
+  $("connectionDot").className = "dot good";
+  $("connectionText").textContent = "NJ81 connected";
+  $("metricFirmware").textContent = "v" + (state.firmware / 100).toFixed(2);
+  $("metricBattery").textContent = (state.battery === 0 && state.battery_status.indexOf("unknown") >= 0) ? "\u2014" : state.battery + "%";
+  $("metricBatteryNote").textContent = state.battery_status + (state.dongle ? " / dongle " + state.dongle[0] + "%" : "");
+  $("metricProfile").textContent = state.profile;
+  $("metricRate").textContent = state.report_rate + " Hz";
+  $("metricEffect").textContent = state.light.name === "unknown" ? "Unknown" : modeTitle(state.light.name);
+  $("metricEffectNote").textContent = "RGB #" + state.light.rgb.toString(16).padStart(6, "0");
+  $("overviewMessage").textContent = "Profile " + state.profile + " is active.";
+  $("reportRate").value = String(state.report_rate);
+  syncProfileSelects(state.profile);
+  // OSD: notice when the hardware picture layer or screen state changed.
+  if (state.light) {
+    if (state.light.name === "user_picture") {
+      const layer = Math.round((state.light.param & 0xF0) / 16);
+      if (lastPicLayer !== null && lastPicLayer !== layer) showToast("Picture layer " + (layer + 1));
+      lastPicLayer = layer;
+    } else if (lastPicLayer !== null) {
+      lastPicLayer = null;
+    }
+  }
+  if (state.follow && state.follow.bands && $("followViz")) {
+    const canvas = $("followViz"), ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const bars = 32, w = canvas.width / bars;
+    for (let i = 0; i < bars; i++) {
+      const h = Math.max(1, state.follow.bands[i] * 3);
+      ctx.fillStyle = "hsl(" + (210 + i * 3) + ", 80%, 60%)";
+      ctx.fillRect(i * w + 1, canvas.height - h, w - 2, h);
+    }
+  }
+  document.querySelectorAll("[data-option]").forEach(node => {
+    node.checked = !!state.options[node.dataset.option];
+  });
+  loadLightControls(state.light);
+  if ($("overviewLightMode") && state.light && LIGHT_MODES.includes(state.light.name) && Date.now() - lightDirtyAt >= 6000) {
+    $("overviewLightMode").value = state.light.name;
+  }
+  if ($("screenPill")) {
+    $("screenPill").textContent = state.screen === true ? "Screen: ready (160x80 RGB565)" : "Screen: use Fn+Right Ctrl to open";
+    $("screenPill").style.borderColor = state.screen === true ? "var(--good)" : "";
+  }
+  if (state.follow) {
+    followRunning = !!state.follow.running;
+    followKind = state.follow.kind;
+    if (state.follow.error) setMessage("followMessage", "Follow error: " + state.follow.error, true);
+    updateFollowStatus();
+  }
+  setPictureCanvas();
+}
+
+async function loadStatus() {
+  try {
+    const state = await api("/api/status");
+    updateStatus(state);
+  } catch (error) {
+    $("connectionDot").className = "dot bad";
+    $("connectionText").textContent = "Keyboard unavailable";
+    ["metricFirmware", "metricBattery", "metricRate", "metricEffect"].forEach(id => $(id).textContent = "--");
+    $("overviewMessage").textContent = error.message;
+  }
+}
+
+function buildKeyboard() {
+  const stage = $("keyboardStage");
+  const minX = Math.min(...LAYOUT.map(key => key.x));
+  const minY = Math.min(...LAYOUT.map(key => key.y));
+  const maxX = Math.max(...LAYOUT.map(key => key.x + key.w));
+  const maxY = Math.max(...LAYOUT.map(key => key.y + key.h));
+  const scale = 1.28;
+  stage.style.width = ((maxX - minX) * scale + 28) + "px";
+  stage.style.height = ((maxY - minY) * scale + 28) + "px";
+  LAYOUT.forEach(key => {
+    const node = document.createElement("button");
+    node.className = "key";
+    node.dataset.value = key.value;
+    node.style.left = ((key.x - minX) * scale + 10) + "px";
+    node.style.top = ((maxY - key.y) * scale + 10) + "px";
+    node.style.width = (key.w * scale - 3) + "px";
+    node.style.height = (key.h * scale - 3) + "px";
+    if (key.w < 40) node.classList.add("compact");
+    node.title = key.keyName;
+    node.onclick = () => selectKey(key);
+    stage.appendChild(node);
+  });
+}
+
+function decodeCfg(cfg) {
+  if (!cfg) return "";
+  if ((cfg[0] === 0 && cfg[1] === 0 && (cfg[2] === 0 || cfg[2] === 1)) || !cfg.some(Boolean)) return "Disabled";
+  if (cfg[0] === 0) {
+    const parts = [];
+    if (cfg[1] >= 224 && cfg[1] <= 227) parts.push(keyName(cfg[1]));
+    [cfg[2], cfg[3]].forEach(code => { if (code) parts.push(keyName(code)); });
+    return parts.join(" + ") || "Empty";
+  }
+  const tables = [MEDIA, MOUSE, COMBOS, SPECIAL];
+  for (const table of tables) for (const [label, value] of Object.entries(table)) {
+    if (JSON.stringify(value) === JSON.stringify(cfg)) return label;
+  }
+  return "Type " + cfg[0] + " / " + cfg.slice(1).join(" ");
+}
+
+function refreshKeyboard() {
+  document.querySelectorAll("#keyboardStage .key").forEach(node => {
+    const pos = POSMAP[node.dataset.value];
+    const entry = pos === undefined ? null : matrix[pos];
+    node.classList.toggle("selected", !!current && current.position === pos);
+    node.classList.toggle("reserved", fnLayer && pos !== undefined && reservedKeys.has(pos));
+    const mapped = entry ? (entry.name || decodeCfg(entry.cfg)) : "";
+    const title = node.title;
+    if (mapped) {
+      const physical = mapped !== title ? "<span class=\"physical\">" + esc(title) + "</span>" : "";
+      node.innerHTML = "<span>" + esc(mapped) + "</span>" + physical;
+    } else {
+      node.innerHTML = esc(title);
+    }
+  });
+}
+
+async function loadMatrix() {
+  try {
+    const data = await api("/api/matrix?fn=" + (fnLayer ? "1" : "0") + "&profile=" + profile);
+    matrix = data.entries;
+    reservedKeys = new Set(data.reserved || []);
+    refreshKeyboard();
+    if (current) selectKey(LAYOUT.find(key => POSMAP[key.value] === current.position) || LAYOUT[0], true);
+  } catch (error) { setMessage("mappingMessage", error.message, true); }
+}
+
+function selectKey(key, keepPicker = false) {
+  const position = POSMAP[key.value];
+  if (position === undefined) { showToast("That physical key has no matrix slot", true); return; }
+  const entry = matrix[position];
+  const reserved = fnLayer && reservedKeys.has(position);
+  current = {position, label:key.keyName, cfg:null};
+  const lockNote = reserved ? "<p class=\"muted small\" style=\"color:var(--accent-2)\">This key holds the native Fn shortcut \"" + esc(entry ? entry.name : "special") + "\" - applying an action overwrites it.</p>" : "";
+  $("keyDetail").innerHTML = "<h3>" + esc(key.keyName) + " <span class=\"muted small\">slot " + position + "</span></h3><p>Current assignment: <strong>" + esc(entry ? entry.name : "unknown") + "</strong></p>" + lockNote;
+  if (!keepPicker) renderPicker(pickerTab);
+  refreshKeyboard();
+}
+
+function pickerItems(tab) {
+  if (tab === "keys") return Object.entries(HID_NAMES).filter(([hid, name]) => {
+    const code = Number(hid); return code <= 255 && !!name;
+  }).map(([hid, name]) => ({label:name, cfg:[0,0,Number(hid),0]}));
+  const table = {media:MEDIA, mouse:MOUSE, combos:COMBOS, special:SPECIAL}[tab] || {};
+  return Object.entries(table).map(([label, cfg]) => ({label, cfg}));
+}
+
+function renderPicker(tab) {
+  pickerTab = tab;
+  document.querySelectorAll("#pickerTabs .tab").forEach(node => node.classList.toggle("active", node.dataset.picker === tab));
+  const query = $("pickerSearch").value.trim().toLowerCase();
+  const picker = $("picker"); picker.innerHTML = "";
+  const items = pickerItems(tab).filter(item => item.label.toLowerCase().includes(query));
+  if (!items.length) { picker.innerHTML = "<div class=\"picker-empty\">No matching actions.</div>"; return; }
+  items.forEach(item => {
+    const button = document.createElement("button");
+    button.className = "pick"; button.textContent = item.label;
+    button.onclick = () => { if (current) { current.cfg = item.cfg; setMessage("mappingMessage", "Selected " + item.label + ". Apply when ready."); } };
+    picker.appendChild(button);
+  });
+}
+
+document.querySelectorAll("#pickerTabs .tab").forEach(node => node.onclick = () => renderPicker(node.dataset.picker));
+$("pickerSearch").oninput = () => renderPicker(pickerTab);
+document.querySelectorAll("#view-mapping [data-layer]").forEach(node => node.onclick = () => {
+  fnLayer = node.dataset.layer === "fn";
+  document.querySelectorAll("#view-mapping [data-layer]").forEach(tab => tab.classList.toggle("active", tab === node));
+  $("layerPill").textContent = fnLayer ? "Fn layer" : "Base layer";
+  $("layerNote").textContent = fnLayer ? "Assigned Fn keys are native shortcuts (screen controls, brightness...); remapping warns before overwriting." : "The base layer is fully writable; Reset restores the vendor default.";
+  $("resetMapping").disabled = fnLayer;
+  $("resetMapping").title = fnLayer ? "Fn factory defaults are stored in firmware and cannot be restored per key" : "";
+  current = null; loadMatrix();
+});
+$("reloadMatrix").onclick = loadMatrix;
+
+let pendingApply = null;
+function askOverwrite(text, onYes) {
+  $("warnText").textContent = text;
+  $("warnBackdrop").hidden = false;
+  pendingApply = onYes;
+}
+$("warnPick").onclick = () => {
+  $("warnBackdrop").hidden = true; pendingApply = null;
+  current = null; renderPicker(pickerTab);
+  setMessage("mappingMessage", "Pick a different physical key to map instead.");
+  refreshKeyboard();
+};
+$("warnGo").onclick = () => {
+  $("warnBackdrop").hidden = true;
+  const proceed = pendingApply; pendingApply = null;
+  if (proceed) proceed();
+};
+$("warnBackdrop").onclick = (e) => {
+  if (e.target === $("warnBackdrop")) { $("warnBackdrop").hidden = true; pendingApply = null; }
+};
+
+async function applyMapping(disable = false) {
+  if (!current) { setMessage("mappingMessage", "Select a physical key first", true); return; }
+  if (!disable && !current.cfg) { setMessage("mappingMessage", "Choose an action first", true); return; }
+  if (fnLayer && reservedKeys.has(current.position)) {
+    const entry = matrix[current.position];
+    const what = disable ? "Disabling" : "Storing an action on";
+    askOverwrite(current.label + " currently holds the native Fn shortcut \"" + (entry ? entry.name : "special") + "\" (" + what + " removes that shortcut). Overwrite it or choose another key.");
+    return;
+  }
+  await doApply(disable);
+}
+async function doApply(disable) {
+  try {
+    const data = await jsonPost("/api/key", {position:current.position, profile, fn:fnLayer, cfg:disable ? [0,0,0,0] : current.cfg});
+    setMessage("mappingMessage", data.warning || (disable ? "Key disabled." : "Mapping applied."));
+    showToast(data.warning || (disable ? "Key disabled" : "Mapping applied"));
+    await loadMatrix();
+  } catch (error) { setMessage("mappingMessage", error.message, true); showToast(error.message, true); }
+}
+$("applyMapping").onclick = () => applyMapping(false);
+$("disableMapping").onclick = () => applyMapping(true);
+
+$("resetMapping").onclick = async () => {
+  if (!current) { setMessage("mappingMessage", "Select a physical key first", true); return; }
+  if (fnLayer) { setMessage("mappingMessage", "Fn reset is disabled: Fn factory defaults are stored in firmware.", true); return; }
+  try {
+    const data = await jsonPost("/api/key", {position: current.position, profile, fn: fnLayer, reset: true});
+    setMessage("mappingMessage", data.warning || "Key restored to factory default.");
+    showToast(data.warning || "Key restored to default");
+    await loadMatrix();
+  } catch (error) { setMessage("mappingMessage", error.message, true); showToast(error.message, true); }
+};
+
+function populateLightModes() {
+  const options = LIGHT_MODES.map(name => "<option value=\"" + name + "\">" + modeTitle(name) + "</option>").join("");
+  $("lightMode").innerHTML = options;
+  $("overviewLightMode").innerHTML = options;
+}
+function updateLightOption() {
+  const mode = $("lightMode").value;
+  const options = LIGHT_OPTIONS[mode] || [];
+  $("lightOptionWrap").style.display = options.length ? "grid" : "none";
+  $("lightOption").innerHTML = options.map(item => "<option value=\"" + item.value + "\">" + item.label + "</option>").join("");
+  $("lightDazzleWrap").style.display = LIGHT_DAZZLE.includes(mode) ? "flex" : "none";
+  const followMode = mode === "music_follow2" || mode === "music_follow3" || mode === "screen_color";
+  $("followRow").style.display = followMode ? "flex" : "none";
+  updateFollowStatus();
+  updateLightPreview();
+  refreshPictureLayer();
+}
+
+const pictureLayerCache = {};
+async function refreshPictureLayer() {
+  const mode = $("lightMode").value;
+  if (mode !== "user_picture") return;
+  const opt = Number(($("lightOption").selectedOptions[0] || {}).value || 0);
+  const layer = Math.round(opt / 16);
+  if (pictureLayerCache[layer]) return;
+  try {
+    const data = await api("/api/userpic?layer=" + layer);
+    pictureLayerCache[layer] = data.pixels;
+  } catch (error) { /* keep the generic preview as fallback */ }
+}
+
+let followRunning = false;
+let followKind = null;
+function updateFollowStatus() {
+  if (!$("followStart")) return;
+  const mode = $("lightMode").value;
+  const followMode = mode === "music_follow2" || mode === "music_follow3" || mode === "screen_color";
+  const active = followMode && followRunning;
+  $("followStart").style.display = followMode ? "" : "none";
+  $("followStop").style.display = active ? "" : "none";
+  if (!followMode) return;
+  $("followMessage").textContent = active
+    ? (followKind === "screen" ? "Following screen color. Select a new mode to stop." : "Following audio. Select a new mode to stop.")
+    : (followKind === "music" ? "Set to music_follow2 or music_follow3, then Apply." : "Set to screen_color, then Apply.");
+}
+
+function followKindFor(mode) {
+  return mode === "screen_color" ? "screen" : "music";
+}
+
+$("followStart").onclick = async () => {
+  const mode = $("lightMode").value;
+  try {
+    await jsonPost("/api/follow", {action: "start", kind: followKindFor(mode)});
+    followRunning = true;
+    followKind = followKindFor(mode);
+    updateFollowStatus();
+  } catch (error) { setMessage("followMessage", error.message, true); showToast(error.message, true); }
+};
+$("followStop").onclick = async () => {
+  try {
+    await jsonPost("/api/follow", {action: "stop"});
+    followRunning = false;
+    followKind = null;
+    updateFollowStatus();
+  } catch (error) { setMessage("followMessage", error.message, true); }
+};
+let lightDirtyAt = 0;
+let lastLightSig = null;
+function lightSig(light) {
+  return JSON.stringify([light.name, light.option && light.option.value,
+    light.speed, light.value, light.rgb, !!light.dazzle, light.param]);
+}
+function updateLightPreview() {
+  lightDirtyAt = Date.now();
+  const mode = $("lightMode").value;
+  const option = $("lightOption").selectedOptions[0];
+  const color = $("lightColor").value;
+  previewColor = color;
+  $("lightPreviewName").textContent = modeTitle(mode);
+  $("lightPreviewDetail").textContent = "speed " + $("lightSpeed").value + " / level " + $("lightValue").value + (option ? " / " + option.textContent : "") + ($("lightDazzle").checked ? " / Dazzle" : "");
+  $("effectSwatch").style.background = color;
+  $("effectSwatch").style.boxShadow = "0 0 28px " + color + "55";
+  $("lightSpeedOut").textContent = $("lightSpeed").value;
+  $("lightValueOut").textContent = $("lightValue").value;
+}
+function loadLightControls(light) {
+  if (!light) return;
+  // Dedupe: the 5s status poll must not rewrite controls that already
+  // match, and must never clobber a selection the user is making.
+  const sig = lightSig(light);
+  if (sig === lastLightSig) return;
+  if (Date.now() - lightDirtyAt < 6000) return;
+  $("lightMode").value = light.name;
+  updateLightOption();
+  if (light.option) $("lightOption").value = String(light.option.value);
+  $("lightSpeed").value = String(light.speed);
+  $("lightValue").value = String(light.value);
+  $("lightColor").value = "#" + light.rgb.toString(16).padStart(6, "0");
+  $("lightDazzle").checked = !!light.dazzle;
+  $("lightReadback").textContent = modeTitle(light.name) + " / param " + light.param + (light.dazzle ? " / Dazzle" : "");
+  lastLightSig = sig;
+  lightDirtyAt = 0;
+  updateLightPreview();
+}
+$("lightMode").onchange = updateLightOption;
+$("lightSpeed").oninput = updateLightPreview;
+$("lightValue").oninput = updateLightPreview;
+$("lightColor").oninput = updateLightPreview;
+$("lightOption").onchange = updateLightPreview;
+$("readLight").onclick = loadStatus;
+$("overviewLightApply").onclick = async () => {
+  const mode = $("overviewLightMode").value;
+  const rgb = parseInt($("overviewLightColor").value.slice(1), 16);
+  try {
+    await jsonPost("/api/light", {mode, speed:0, value:4, rgb});
+    setMessage("overviewLightMessage", "Light mode applied."); showToast("Light mode updated"); await loadStatus();
+  } catch (error) { setMessage("overviewLightMessage", error.message, true); }
+};
+$("applyLight").onclick = async () => {
+  const mode = $("lightMode").value;
+  const body = {mode, speed:Number($("lightSpeed").value), value:Number($("lightValue").value), rgb:parseInt($("lightColor").value.slice(1), 16)};
+  if ((LIGHT_OPTIONS[mode] || []).length) body.option = Number($("lightOption").value);
+  if (LIGHT_DAZZLE.includes(mode)) body.dazzle = $("lightDazzle").checked;
+  try {
+    const data = await jsonPost("/api/light", body);
+    lightDirtyAt = 0; lastLightSig = null;
+    loadLightControls(data.light); setMessage("lightMessage", "Effect applied."); showToast("Lighting updated");
+  } catch (error) { setMessage("lightMessage", error.message, true); showToast(error.message, true); }
+};
+$("lightDazzle").onchange = updateLightPreview;
+
+// ---- live effect preview ------------------------------------------------
+let previewColor = "#ffffff";
+const lightKeys = [];
+const PREVIEW_SCALE = 0.5;
+function hexRgb(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  return {r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255};
+}
+function hslRgb(h, s, l) {
+  const a = s * Math.min(l, 1 - l), k = (n) => {
+    const x = (n + h / 30) % 12;
+    return Math.round(255 * (l - a * Math.max(-1, Math.min(x - 3, Math.min(9 - x, 1)))));
+  };
+  return {r: k(0), g: k(8), b: k(4)};
+}
+function scaleC(c, f) { return {r: c.r * f, g: c.g * f, b: c.b * f}; }
+function fract(x) { return x - Math.floor(x); }
+function hash(n) { return fract(Math.sin(n * 127.1) * 43758.5453); }
+function buildLightStage() {
+  const stage = $("lightStage"); if (!stage) return;
+  stage.innerHTML = "";
+  const b = pictureBounds();
+  lightKeys.length = 0;
+  for (const key of LAYOUT) {
+    const pos = POSMAP[key.value];
+    if (pos === undefined) continue;
+    const el = document.createElement("div");
+    el.className = "key";
+    el.style.left = ((key.x - b.minX) * PREVIEW_SCALE) + "px";
+    el.style.top = ((b.maxY - key.y) * PREVIEW_SCALE) + "px";
+    el.style.width = (key.w * PREVIEW_SCALE) + "px";
+    el.style.height = (key.h * PREVIEW_SCALE) + "px";
+    stage.appendChild(el);
+    lightKeys.push({el, x: key.x + key.w / 2 - b.minX, y: b.maxY - (key.y + key.h / 2), pos});
+  }
+  stage.style.width = (b.width * PREVIEW_SCALE) + "px";
+  stage.style.height = (b.height * PREVIEW_SCALE) + "px";
+  const cx = b.width / 2, cy = b.height / 2;
+  const byRow = [...lightKeys].sort((a, b) => (a.y - b.y) || (a.x - b.x));
+  lightKeys.forEach((k, i) => {
+    const rowKey = Math.round(k.y / 21);
+    let order = byRow.findIndex(e => e === k);
+    if (rowKey % 2 === 1) order = lightKeys.length - 1 - order;
+    k.z = order;
+  });
+  lightKeys.forEach(k => { k.d = Math.hypot(k.x - cx, k.y - cy); k.a = Math.atan2(k.y - cy, k.x - cx); });
+  lightKeys.forEach(k => { k.col = Math.round(k.x / 21); });
+}
+function previewColors(t) {
+  const mode = $("lightMode").value;
+  const opt = Number(($("lightOption").selectedOptions[0] || {}).value || 0);
+  const speed = Number($("lightSpeed").value);
+  const level = Number($("lightValue").value);
+  const dazzle = $("lightDazzle").checked && LIGHT_DAZZLE.includes(mode);
+  const base = hexRgb(previewColor);
+  const vel = 1 + (4 - speed) * 1.9;
+  const lum = 0.22 + 0.78 * (level / 4);
+  const maxD = Math.max(...lightKeys.map(k => k.d));
+  const colors = new Array(lightKeys.length);
+  for (const k of lightKeys) {
+    let c = null, f = 1;
+    switch (mode) {
+      case "off": break;
+      case "always_on": c = base; break;
+      case "breath": c = scaleC(base, 0.55 + 0.45 * Math.sin(t * 2.4 * vel)); break;
+      case "neon": c = scaleC(base, 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * 1.6 * vel + k.x * 0.12))); break;
+      case "wave": {
+        const phase = (opt === 0 ? -k.x : opt === 16 ? k.x : opt === 32 ? k.y : -k.y) + t * 46 * vel;
+        c = scaleC(base, 0.5 + 0.5 * Math.sin(phase * 0.085));
+        break;
+      }
+      case "ripple": {
+        const ring = Math.abs((k.d - t * 58 * vel) % maxD);
+        f = opt === 16 ? Math.max(0, 1 - ring / 26) : Math.max(0, 1 - ring / 90);
+        c = scaleC(base, f); break;
+      }
+      case "raindrop": {
+        const drop = fract(t * 0.55 * vel + hash(k.pos * 3.7));
+        c = scaleC(base, Math.max(0, 1 - drop * 3.2)); break;
+      }
+      case "snake":
+      case "train": {
+        const head = (t * 12 * vel) % (lightKeys.length + 26);
+        const d = head - k.z;
+        c = scaleC(base, Math.max(0, 1 - d / 22)); break;
+      }
+      case "press_action":
+      case "press_action_off": {
+        const flash = hash(k.pos * 13.1 + Math.floor(t * 3.4 * vel));
+        c = scaleC(base, 0.12 + 0.88 * (flash > 0.92 ? 1 : 0)); break;
+      }
+      case "coverage": {
+        const edge = (t * 85 * vel) % (k.x + 240);
+        f = Math.max(0, 1 - (k.x + 240 - edge) / 240);
+        c = scaleC(base, 0.15 + 0.85 * f); break;
+      }
+      case "sine_wave": c = scaleC(base, 0.5 + 0.5 * Math.sin(k.y * 0.24 - t * 3.6 * vel)); break;
+      case "kaleidoscope": {
+        const ring = Math.sin(k.d * 0.11 + (opt === 16 ? t : -t) * 4.2 * vel);
+        c = scaleC(base, 0.35 + 0.65 * ring * ring); break;
+      }
+      case "line_wave": {
+        const line = (t * 62 * vel) % 240;
+        const dist = opt === 16 ? Math.abs(k.x - line) : Math.abs(k.y - line);
+        c = scaleC(base, Math.max(0, 1 - dist / 46)); break;
+      }
+      case "laser": {
+        const line = (t * 88 * vel) % 240;
+        c = scaleC(base, Math.max(0, 1 - Math.abs(k.x - line) / 30)); break;
+      }
+      case "circle_wave": {
+        const rot = (opt === 16 ? 1 : -1) * t * 3.1 * vel;
+        c = scaleC(base, 0.5 + 0.5 * Math.sin(k.a * 4 + rot)); break;
+      }
+      case "dazzling": c = scaleC(base, 0.25 + 0.75 * hash(k.pos * 7.7 + Math.floor(t * 6 * vel))); break;
+      case "rain_down": {
+        const drop = ((t * 92 * vel + k.col * 17) % 250);
+        c = scaleC(base, Math.max(0, 1 - Math.abs(k.y - drop) / 56)); break;
+      }
+      case "meteor": {
+        const head = (t * 26 * vel) % (lightKeys.length + 40);
+        const d = head - k.z;
+        c = scaleC(base, Math.max(0, 1 - d / 9)); break;
+      }
+      case "fireworks": {
+        const burst = Math.floor(t * 0.9 * vel) + hash(k.pos);
+        c = scaleC(base, Math.max(0, 1 - ((k.d + 60 * fract(burst * 5.3)) % maxD) / maxD) * (0.25 + 0.75 * hash(burst + k.pos * 0.31))); break;
+      }
+      case "user_picture": {
+        const layer = Math.round(opt / 16);
+        const pixels = pictureLayerCache[layer];
+        const px = pixels && pixels[k.pos];
+        if (px) {
+          c = {r: px[0] * (0.75 + 0.25 * Math.sin(t * 1.6)), g: px[1] * (0.75 + 0.25 * Math.sin(t * 1.6)), b: px[2] * (0.75 + 0.25 * Math.sin(t * 1.6))};
+        } else {
+          c = scaleC(base, 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * 1.2)));
+        }
+        break;
+      }
+      case "screen_color": c = scaleC(base, 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * 1.2))); break;
+      case "music_follow2":
+      case "music_follow3": {
+        const band = 0.3 + 0.7 * Math.abs(Math.sin(t * 2.2 * vel + k.col * 0.55));
+        c = scaleC(base, band); break;
+      }
+      default: break;
+    }
+    if (c === null) { k.el.style.background = "rgba(255,255,255,.05)"; k.el.style.boxShadow = "none"; continue; }
+    if (dazzle) {
+      const h = (hexRgb(previewColor).r * 0.6 + t * 42 * (mode === "always_on" ? 0.4 : 1)) % 360;
+      c = hslRgb(h, 0.85, 0.5);
+    }
+    c = scaleC(c, lum);
+    const ri = Math.min(255, Math.round(c.r)), gi = Math.min(255, Math.round(c.g)), bi = Math.min(255, Math.round(c.b));
+    const max = Math.max(ri, gi, bi);
+    k.el.style.background = "rgb(" + ri + "," + gi + "," + bi + ")";
+    k.el.style.boxShadow = max > 40 ? "0 0 7px rgb(" + ri + "," + gi + "," + bi + ")" : "none";
+  }
+}
+let lightStageRaf = null;
+function lightPreviewTick() {
+  previewColors(performance.now() / 1000);
+  lightStageRaf = requestAnimationFrame(lightPreviewTick);
+}
+buildLightStage();
+new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) {
+    if (!lightStageRaf) lightStageRaf = requestAnimationFrame(lightPreviewTick);
+  } else if (lightStageRaf) {
+    cancelAnimationFrame(lightStageRaf); lightStageRaf = null;
+  }
+}).observe($("view-lighting"));
+LIGHT_PRESETS.forEach(preset => {
+  const sw = document.createElement("button");
+  sw.className = "swatch"; sw.title = preset.label; sw.style.background = preset.hex;
+  sw.onclick = () => { $("lightColor").value = preset.hex; updateLightPreview(); };
+  $("lightPresets").appendChild(sw);
+});
+
+function pictureBounds() {
+  const minX = Math.min(...LAYOUT.map(key => key.x));
+  const minY = Math.min(...LAYOUT.map(key => key.y));
+  const maxX = Math.max(...LAYOUT.map(key => key.x + key.w));
+  const maxY = Math.max(...LAYOUT.map(key => key.y + key.h));
+  return {minX, minY, maxX, maxY, width:maxX - minX, height:maxY - minY};
+}
+function setPictureCanvas() {
+  if (!$("pictureCanvas")) return;
+  drawPicture();
+}
+function drawPicture() {
+  const canvas = $("pictureCanvas"), ctx = canvas.getContext("2d");
+  const bounds = pictureBounds(), margin = 18;
+  const scale = Math.min((canvas.width - margin * 2) / bounds.width, (canvas.height - margin * 2) / bounds.height);
+  const boardWidth = bounds.width * scale, boardHeight = bounds.height * scale;
+  const ox = (canvas.width - boardWidth) / 2, oy = (canvas.height - boardHeight) / 2;
+  const stageBg = getComputedStyle(document.body).getPropertyValue("--stage-bg").trim() || "#111719";
+  ctx.fillStyle = stageBg; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  if (pictureImage) {
+    const fit = Math.min(boardWidth / pictureImage.width, boardHeight / pictureImage.height);
+    const iw = pictureImage.width * fit, ih = pictureImage.height * fit;
+    ctx.drawImage(pictureImage, ox + (boardWidth - iw) / 2, oy + (boardHeight - ih) / 2, iw, ih);
+  }
+  picturePixels = [];
+  LAYOUT.forEach(key => {
+    const position = POSMAP[key.value];
+    if (position === undefined) return;
+    const x = ox + (key.x - bounds.minX) * scale;
+    const y = oy + (bounds.maxY - key.y) * scale;
+    const w = key.w * scale - 2, h = key.h * scale - 2;
+    const sample = ctx.getImageData(Math.max(0, Math.floor(x + w / 2)), Math.max(0, Math.floor(y + h / 2)), 1, 1).data;
+    const rgb = {position, r:sample[0], g:sample[1], b:sample[2]}; picturePixels.push(rgb);
+    ctx.fillStyle = "rgba(" + sample[0] + "," + sample[1] + "," + sample[2] + ",.88)";
+    ctx.strokeStyle = "rgba(255,255,255,.5)"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.roundRect(x, y, w, h, 4); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = "rgba(0,0,0,.62)"; ctx.font = Math.max(7, Math.min(11, h / 3)) + "px system-ui"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(key.keyName, x + w / 2, y + h / 2);
+  });
+}
+$("pictureZoom").oninput = () => {
+  const z = Number($("pictureZoom").value) / 100;
+  $("pictureZoomOut").textContent = Math.round(z * 100) + "%";
+  const canvas = $("pictureCanvas");
+  canvas.style.transform = "scale(" + z + ")";
+  canvas.style.transformOrigin = "top left";
+};
+$("pictureFile").onchange = event => {
+  const file = event.target.files[0]; if (!file) return;
+  const image = new Image(); image.onload = () => { pictureImage = image; drawPicture(); setMessage("pictureMessage", "Preview ready. Upload when the sampling looks right."); };
+  image.onerror = () => setMessage("pictureMessage", "Could not decode that image.", true);
+  image.src = URL.createObjectURL(file);
+};
+$("pictureLayer").onchange = () => drawPicture();
+$("applyPicture").onclick = async () => {
+  if (!pictureImage || !picturePixels.length) { setMessage("pictureMessage", "Choose an image first.", true); return; }
+  const button = $("applyPicture"); button.disabled = true; setMessage("pictureMessage", "Writing " + picturePixels.length + " key colors...");
+  try {
+    const data = await jsonPost("/api/picture", {layer:Number($("pictureLayer").value), pixels:picturePixels});
+    setMessage("pictureMessage", "Uploaded " + data.pixels + " colors and activated Picture " + (data.layer + 1) + "."); showToast("Image stored on keyboard"); await loadStatus();
+  } catch (error) { setMessage("pictureMessage", error.message, true); showToast(error.message, true); }
+  button.disabled = false;
+};
+
+function drawScreenPreview() {
+  const ctx = $("screenCanvas").getContext("2d");
+  ctx.fillStyle = "#000"; ctx.fillRect(0, 0, 160, 80);
+  if (screenImage) {
+    // cover: zoom in to fill the screen, cropping overflow
+    const fit = Math.max(160 / screenImage.width, 80 / screenImage.height);
+    const iw = screenImage.width * fit, ih = screenImage.height * fit;
+    ctx.drawImage(screenImage, (160 - iw) / 2, (80 - ih) / 2, iw, ih);
+  }
+}
+
+function screenTo565() {
+  const ctx = $("screenCanvas").getContext("2d");
+  const w = 160, h = 80;
+  const data = ctx.getImageData(0, 0, w, h).data;
+  let left = w, top = h, right = 0, bottom = 0;
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const i = (y * w + x) * 4;
+    if (data[i] || data[i + 1] || data[i + 2]) {
+      if (x < left) left = x;
+      if (x > right) right = x;
+      if (y < top) top = y;
+      if (y > bottom) bottom = y;
+    }
+  }
+  if (right < left) return null;
+  const out = new Uint8Array((right - left + 1) * (bottom - top + 1) * 2);
+  let o = 0;
+  // column-major (x outer, y inner), big-endian (hi byte first) -
+  // matching the vendor's yfn transpose and wire order
+  for (let x = left; x <= right; x++) for (let y = top; y <= bottom; y++) {
+    const i = (y * w + x) * 4;
+    const p = ((data[i] >> 3) << 11) | ((data[i + 1] >> 2) << 5) | (data[i + 2] >> 3);
+    out[o++] = p >> 8;
+    out[o++] = p & 0xFF;
+  }
+  return {bytes: out, box: [left, top, right + 1, bottom + 1]};
+}
+
+$("screenFile").onchange = event => {
+  const file = event.target.files[0]; if (!file) return;
+  const image = new Image();
+  image.onload = () => { screenImage = image; drawScreenPreview(); setMessage("screenMessage", "Screen preview ready. Upload when it looks right."); };
+  image.onerror = () => setMessage("screenMessage", "Could not decode that image.", true);
+  image.src = URL.createObjectURL(file);
+};
+$("applyScreen").onclick = async () => {
+  if (!screenImage) { setMessage("screenMessage", "Choose an image first.", true); return; }
+  const packed = screenTo565();
+  if (!packed) { setMessage("screenMessage", "The image is fully black - nothing to send.", true); return; }
+  let bin = "";
+  for (let i = 0; i < packed.bytes.length; i += 8192) bin += String.fromCharCode(...packed.bytes.subarray(i, i + 8192));
+  const button = $("applyScreen"); button.disabled = true;
+  setMessage("screenMessage", "Uploading " + (packed.box[2] - packed.box[0]) + "x" + (packed.box[3] - packed.box[1]) + " region to Picture " + (Number($("screenLayer").value) + 1) + "...");
+  try {
+    const data = await jsonPost("/api/screen", {image:btoa(bin), box:packed.box, layer:Number($("screenLayer").value)});
+    setMessage("screenMessage", "Screen image uploaded to Picture " + (data.layer + 1) + "."); showToast("Screen image uploaded");
+  } catch (error) { setMessage("screenMessage", error.message, true); showToast(error.message, true); }
+  button.disabled = false;
+};
+
+$("applyRate").onclick = async () => {
+  try { await jsonPost("/api/rate", {hz:Number($("reportRate").value)}); setMessage("settingsMessage", "Report rate applied."); showToast("Report rate updated"); await loadStatus(); }
+  catch (error) { setMessage("settingsMessage", error.message, true); }
+};
+document.querySelectorAll("[data-option]").forEach(node => node.onchange = async () => {
+  try { await jsonPost("/api/option", {[node.dataset.option]:node.checked ? 1 : 0}); setMessage("settingsMessage", "Option updated."); }
+  catch (error) { node.checked = !node.checked; setMessage("settingsMessage", error.message, true); }
+});
+$("factoryReset").onclick = async () => {
+  const confirmed = window.confirm("Factory reset will erase stored mappings, macros, images, profiles, and lighting settings. Continue?");
+  if (!confirmed) return;
+  const button = $("factoryReset"); button.disabled = true; setMessage("resetMessage", "Resetting keyboard and waiting for defaults...");
+  try { await jsonPost("/api/reset", {}); setMessage("resetMessage", "Factory defaults restored."); showToast("Keyboard reset"); current = null; await loadStatus(); await loadMatrix(); }
+  catch (error) { setMessage("resetMessage", error.message, true); showToast(error.message, true); }
+  button.disabled = false;
+};
+
+// ---- profiles --------------------------------------------------------------
+function populateProfileSelects() {
+  const opts = Array.from({length: 6}, (_, i) => "<option value=\"" + i + "\">Profile " + (i + 1) + "</option>").join("");
+  $("profileSel").innerHTML = opts;
+  $("mapProfileSel").innerHTML = opts;
+}
+function syncProfileSelects(value) {
+  profile = value;
+  [ "profileSel", "mapProfileSel" ].forEach(id => {
+    const el = $(id);
+    if (el && el.value !== String(value)) el.value = String(value);
+  });
+}
+async function switchProfile(value) {
+  if (profileBusy) return;
+  profileBusy = true;
+  try {
+    await jsonPost("/api/profile", {profile: value});
+    profile = value;
+    syncProfileSelects(value);
+    setMessage("profileMessage", "Switched to profile " + (value + 1) + ".");
+    showToast("Profile " + (value + 1));
+    current = null;
+    await loadStatus();
+    await loadMatrix();
+  } catch (error) { setMessage("profileMessage", error.message, true); showToast(error.message, true); }
+  profileBusy = false;
+}
+$("profileApply").onclick = () => switchProfile(Number($("profileSel").value));
+$("mapProfileSel").onchange = () => switchProfile(Number($("mapProfileSel").value));
+
+// ---- power panel ------------------------------------------------------------
+$("readPower").onclick = async () => {
+  try {
+    const power = await api("/api/power");
+    $("pwDebounce").value = power.debounce;
+    $("pwSleepBt").value = power.sleep[0];
+    $("pwSleep24").value = power.sleep[1];
+    $("pwDeepBt").value = power.sleep[2];
+    $("pwDeep24").value = power.sleep[3];
+    $("pwBatteryLp").value = power.battery_lp == null ? 20 : power.battery_lp;
+    setMessage("powerMessage", "Current power settings loaded.");
+  } catch (error) { setMessage("powerMessage", error.message, true); }
+};
+$("applyPower").onclick = async () => {
+  try {
+    const body = {
+      action: "set",
+      debounce: Number($("pwDebounce").value),
+      time_bt: Number($("pwSleepBt").value),
+      time_24: Number($("pwSleep24").value),
+      deep_bt: Number($("pwDeepBt").value),
+      deep_24: Number($("pwDeep24").value),
+      battery_lp: Number($("pwBatteryLp").value),
+    };
+    const data = await jsonPost("/api/power", body);
+    setMessage("powerMessage", "Power settings applied (debounce " + data.updated.debounce + " ms).");
+    showToast("Power settings applied");
+  } catch (error) { setMessage("powerMessage", error.message, true); showToast(error.message, true); }
+};
+
+// ---- backup / restore -------------------------------------------------------
+$("backupDownload").onclick = async () => {
+  const button = $("backupDownload"); button.disabled = true;
+  setMessage("backupMessage", "Reading the keyboard...");
+  try {
+    const data = await api("/api/backup");
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "nj81-backup-" + new Date().toISOString().slice(0, 10) + ".json";
+    a.click();
+    setMessage("backupMessage", "Backup downloaded.");
+  } catch (error) { setMessage("backupMessage", error.message, true); }
+  button.disabled = false;
+};
+$("backupFile").onchange = async event => {
+  const file = event.target.files[0]; if (!file) return;
+  const text = await file.text();
+  try {
+    const data = JSON.parse(text);
+    setMessage("backupMessage", "Restoring " + (data.profiles || []).length + " profiles...");
+    await jsonPost("/api/restore", {data});
+    setMessage("backupMessage", "Backup restored.");
+    showToast("Backup restored");
+    current = null; await loadStatus(); await loadMatrix();
+  } catch (error) { setMessage("backupMessage", "Restore failed: " + error.message, true); }
+  event.target.value = "";
+};
+
+// ---- bluetooth battery ------------------------------------------------------
+$("btBattery").onclick = async () => {
+  const address = $("btAddress").value.trim();
+  if (!address) { setMessage("btMessage", "Enter the keyboard's Bluetooth MAC first.", true); return; }
+  const button = $("btBattery"); button.disabled = true;
+  setMessage("btMessage", "Reading battery over Bluetooth...");
+  try {
+    const data = await jsonPost("/api/btbattery", {address});
+    setMessage("btMessage", "Bluetooth battery: " + data.percent + "% (" + data.status + ")");
+    showToast("BT battery " + data.percent + "%");
+  } catch (error) { setMessage("btMessage", "BT read failed: " + error.message, true); }
+  button.disabled = false;
+};
+
+populateProfileSelects(); populateLightModes(); buildKeyboard(); renderPicker("keys"); updateLightOption(); drawPicture(); loadStatus();
+setInterval(loadStatus, 5000);
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+# Keydous keyboards - Linux driver
+# 50-keydous.rules       : grant the feature HID interface (hidraw) to plugdev
+# 50-keydous-usb.rules   : grant the USB device node (raw control transfers)
+# Install both:
+#   sudo cp udev/50-keydous*.rules /etc/udev/rules.d/
+#   sudo udevadm control --reload && sudo udevadm trigger
+# NOTE: the driver detaches usbhid from the feature interface (interface 2)
+# while talking to the keyboard. usbhid does not always rebind afterwards;
+# to rebind manually:  sudo sh -c 'echo -n "3-2:1.2" > /sys/bus/usb/drivers/usbhid/bind'
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="4010", MODE="0660", GROUP="plugdev"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="4011", MODE="0660", GROUP="plugdev"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="4015", MODE="0660", GROUP="plugdev"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="4018", MODE="0660", GROUP="plugdev"
+SUBSYSTEM=="hidraw", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="401B", MODE="0660", GROUP="plugdev"
+
+SUBSYSTEM=="usb", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="4010", MODE="0660", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="4011", MODE="0660", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="4015", MODE="0660", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="4018", MODE="0660", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTRS{idVendor}=="3151", ATTRS{idProduct}=="401B", MODE="0660", GROUP="plugdev"
