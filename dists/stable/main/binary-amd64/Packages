@@ -1,0 +1,22 @@
+Package: keydous-nj81
+Version: 1.0.0
+Architecture: all
+Maintainer: YappLeCunt <yapplecunt@users.noreply.github.com>
+Depends: python3 (>= 3.8), python3-gi, gir1.2-webkit2-4.1
+Recommends: dbus-next | bleak
+Filename: pool/main/k/keydous-nj81/keydous-nj81_1.0.0_all.deb
+Size: 140696
+MD5sum: 0b710ec3436499f7e32d87e8406dea50
+SHA1: b32e88be3c67238e7341ff8113fdf67178c68fbf
+SHA256: c975d106570afb6f3d303db57c4ef7516247d27fb0b653610f7614414287ecac
+Section: utils
+Priority: optional
+Homepage: https://github.com/YappLeCunt/keydous-nj81-linux
+Description: Open-source Linux driver and web GUI for the Keydous NJ81 keyboard
+ Key mapping, Fn-layer editing, all RGB lighting effects with Dazzle color
+ cycling, 160x80 screen image upload, per-key picture layers, 6 onboard
+ profiles, power/debounce/sleep settings, backup and restore, music and
+ screen follow streams. Reverse-engineered from the vendor software and
+ verified on hardware (firmware 0x0513). Talks to the keyboard over raw USB
+ feature reports; no vendor daemon required.
+
