@@ -22,7 +22,29 @@ firmware `0x0513`.
 It also serves as the most complete public reference for the **Keydous NJ81
 USB protocol** (`docs/FIRMWARE.md`).
 
-## Quick start
+## Install
+
+### Debian / Ubuntu (APT)
+
+```sh
+sudo install -Dm644 <(curl -sL https://yapplecunt.github.io/keydous-nj81-linux/apt-repo.asc) /etc/apt/keyrings/keydous-nj81.asc
+echo "deb [signed-by=/etc/apt/keyrings/keydous-nj81.asc] https://yapplecunt.github.io/keydous-nj81-linux/ stable main" \
+  | sudo tee /etc/apt/sources.list.d/keydous-nj81.list
+sudo apt update && sudo apt install keydous-nj81
+```
+
+Or grab the `.deb` straight from [Releases](https://github.com/YappLeCunt/keydous-nj81-linux/releases) and `sudo apt install ./keydous-nj81_*.deb`.
+
+### Arch (AUR)
+
+`packaging/aur/PKGBUILD` — see `packaging/aur/README.md` for the
+submission state. Until it's on the AUR, build it locally:
+
+```sh
+cd packaging/aur && makepkg -si
+```
+
+### From source
 
 ```sh
 # 1) allow non-root access (raw USB control transfers on interface 2)
